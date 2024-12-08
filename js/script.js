@@ -18,13 +18,18 @@ let sheepInChair = [false,false,false,false,false];
 let score = 0;
 let startTime = Date.now(); 
 const gameDuration = 50000; 
+const gameOverCard = document.getElementById('gameOverCard');
+const gameWinCard = document.getElementById('gameWinCard');
+const restartButton = document.getElementById('restartButton');
+const continueButton = document.getElementById('continueButton');
+restartButton.addEventListener('click', restartGame);
+continueButton.addEventListener('click', restartGame);
 
-
-var theme1 = new Audio("../audio/shaun-the-sheep-theme-song-piano-sheet-music_QhTOwHGR.mp3");
+var theme1 = new Audio("audio/shaun-the-sheep-theme-song-piano-sheet-music_QhTOwHGR.mp3");
 // theme1.loop = true;
 // theme1.play();
-const theme2 = new Audio("../audio/sheep_baa.ogg");
-const theme3 = new Audio("../audio/horn.wav");
+const theme2 = new Audio("audio/sheep_baa.ogg");
+const theme3 = new Audio("audio/horn.wav");
 // theme2.play();
 
 
@@ -172,10 +177,10 @@ background.drawBackground();
 //////////////////////////////////////////////////////////
 
 const sheepImg= new Image();
-sheepImg.src = "../image/3.png";
+sheepImg.src = "image/3.png";
 
 const deadSheepImg= new Image();
-deadSheepImg.src = "../image/2.png";
+deadSheepImg.src = "image/2.png";
 
 
 class Player {
@@ -278,29 +283,29 @@ class Car {
 }
 
 const carImages = [
-'../image/Audi.png',
-'../image/Ambulance.png',
-'../image/Black_viper.png',
-'../image/Car.png',
-'../image/Mini_truck.png',
-'../image/Mini_van.png',
-'../image/Police.png',
-'../image/taxi.png'
+'image/Audi.png',
+'image/Ambulance.png',
+'image/Black_viper.png',
+'image/Car.png',
+'image/Mini_truck.png',
+'image/Mini_van.png',
+'image/Police.png',
+'image/taxi.png'
 ];
 
 const carImagesFlip = [
-'../image/Audi - Copy.png',
-'../image/Ambulance - Copy.png',
-'../image/Black_viper - Copy.png',
-'../image/Car - Copy.png',
-'../image/Mini_truck - Copy.png',
-'../image/Mini_van - Copy.png',
-'../image/Police - Copy.png',
-'../image/taxi - Copy.png'
+'image/Audi - Copy.png',
+'image/Ambulance - Copy.png',
+'image/Black_viper - Copy.png',
+'image/Car - Copy.png',
+'image/Mini_truck - Copy.png',
+'image/Mini_van - Copy.png',
+'image/Police - Copy.png',
+'image/taxi - Copy.png'
 ];
 
 const truckImg = new Image();
-truckImg.src = "../image/truck.png";
+truckImg.src = "image/truck.png";
 
 const getRandomCarImage = () => {
     const carBox=carImages[Math.floor(Math.random() * carImages.length)];
@@ -403,9 +408,9 @@ class log {
     }
 }
 const logImg = new Image();
-logImg.src = "../image/wood1.jpg";
+logImg.src = "image/wood1.jpg";
 const logImg1 = new Image();
-logImg1.src = "../image/wood 2.jpg";
+logImg1.src = "image/wood 2.jpg";
 waterLane1Logs = [];
 waterLane2Logs = [];
 waterLane3Logs = [];
@@ -435,11 +440,11 @@ function spawnLogsForLane(logs, attributes) {
     }
 }
 
-setInterval(() => spawnLogsForLane(waterLane1Logs, [-13, 5.15, col * 4, row / 1.5, 0.08, logImg]), Math.random() * 1000+ 1000);
-setInterval(() => spawnLogsForLane(waterLane2Logs, [19, 4.15, col * 3.5, row / 1.5, -0.09, logImg1]), Math.random() * 1000+ 1000);
-setInterval(() => spawnLogsForLane(waterLane3Logs, [-13, 3.15, col * 4, row / 1.5, 0.09, logImg]), Math.random() * 1000+ 1000);
-setInterval(() => spawnLogsForLane(waterLane4Logs, [19, 2.15, col * 3.5, row / 1.5, -0.09, logImg1]), Math.random() * 1000+ 1000);
-setInterval(() => spawnLogsForLane(waterLane5Logs, [-13, 1.15, col * 4, row / 1.5, 0.09, logImg]), Math.random() * 1000+ 1000);
+setInterval(() => spawnLogsForLane(waterLane1Logs, [-13, 5.15, col * 4, row / 1.5, 0.01, logImg]), Math.random() * 1000+ 1000);
+setInterval(() => spawnLogsForLane(waterLane2Logs, [19, 4.15, col * 3.5, row / 1.5, -0.01, logImg1]), Math.random() * 1000+ 1000);
+setInterval(() => spawnLogsForLane(waterLane3Logs, [-13, 3.15, col * 4, row / 1.5, 0.01, logImg]), Math.random() * 1000+ 1000);
+setInterval(() => spawnLogsForLane(waterLane4Logs, [19, 2.15, col * 3.5, row / 1.5, -0.01, logImg1]), Math.random() * 1000+ 1000);
+setInterval(() => spawnLogsForLane(waterLane5Logs, [-13, 1.15, col * 4, row / 1.5, 0.01, logImg]), Math.random() * 1000+ 1000);
 
 const zone = {
 x: 0,
@@ -547,7 +552,7 @@ function isSheepInSheepChair(sheep, sheepChairs) {
             sheepCenterY >= chair.y &&
             sheepCenterY <= chair.y + chair.height
         ) {
-            console.log('Sheep in pen' + i);
+            // console.log('Sheep in pen' + i);
             return {condition:true,chair:i};
         }
     }
@@ -564,7 +569,9 @@ function isSheepInSheepChair(sheep, sheepChairs) {
 /////////////////Animate/////////////////////////////////
 /////////////////////////////////////////////////////
 let inLog = false;
+let animationFrameId;
 const animate = () => {
+    animationFrameId = requestAnimationFrame(animate);
     const elapsedTime = Date.now() - startTime;
     const timeRemaining = Math.floor((gameDuration - elapsedTime) / 1000);
     // theme1.loop = true;
@@ -604,8 +611,6 @@ const animate = () => {
     const inWater = isSheepInWater(player,zone);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     background.drawBackground();
-    let sheepCenterX = player.x1 * col + col/2;
-    let sheepCenterY = (player.y1 * row) + row/2;
     inLog = false;
     [waterLane1Logs,waterLane2Logs,waterLane3Logs,waterLane4Logs,waterLane5Logs].forEach((laneLogs) => {
     laneLogs.forEach((log, index) => {
@@ -659,26 +664,6 @@ const animate = () => {
     });
 });
 
-function showGameOver() {
-    
-
-    ctx.font = "50px 'Press Start 2P'"; 
-    ctx.fillStyle = "red"; 
-    ctx.textAlign = "center"; 
-    ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2); 
-    ctx.font = "20px 'Press Start 2P'"; 
-    ctx.fillStyle = "white"; 
-    ctx.fillText("Press 'R' to Restart", canvas.width / 2, canvas.height / 1.5); 
-    document.addEventListener("keydown", function (event) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height); 
-        background.drawBackground();
-    });
-    
-     
-}
-
-
-
 const result = isSheepInProhibitedZone(player, prohibitedZones);
 
 if (result) {
@@ -686,14 +671,14 @@ theme2.play();
 player.resetSheep();
 lives-=1;
 } else {
-console.log("Sheep is in a safe area.");
+// console.log("Sheep is in a safe area.");
 }
 
 const result1 = isSheepInSheepChair(player, sheepChairs);
-console.log(result1.condition);
+// console.log(result1.condition);
 
 if (result1.condition) {
-console.log("Sheep is in chair");
+// console.log("Sheep is in chair");
 if (!sheepInChair[result1.chair])
 {
 score += 500;
@@ -710,37 +695,27 @@ lives-=1;
 }
 
 if (lives<=0){
-    // alert("game over");
-    showGameOver();
-    startNewGame();
+    cancelAnimationFrame(animationFrameId);
+    drawGameOverScreen();
 }
+let sheepsinchair=0;
 for (let i=0;i<sheepInChair.length;i++)
 {
 if (sheepInChair[i])
 {
-drawNonPlayerSheep(sheepChairs[i].x,sheepChairs[i].y);
+    sheepsinchair+=1;
+    drawNonPlayerSheep(sheepChairs[i].x,sheepChairs[i].y);
+}
+if (sheepsinchair==5)
+{
+    cancelAnimationFrame(animationFrameId);
+    theme1.play();
+    drawGameWinScreen();
 }
 }
 
 ctx1.fillStyle = "yellow";
 ctx1.fillText(score,canvas.width/4, 95);
-
-// if (gameOver) {
-//     const elapsedGameOverTime = Date.now() - gameOverStartTime;
-
-//     // Show the Game Over screen for the defined duration
-//     showGameOver();
-
-//     // If the game over duration has passed, reset the game
-//     if (elapsedGameOverTime > gameOverTime) {
-//         resetGame(); // Reset game state
-//         gameOver = false; // Reset the game over state
-//         startTime = Date.now(); // Restart the timer
-//     }
-//     return; // Stop the game loop if it's Game Over
-// }
-
-requestAnimationFrame(animate);
 };
 
 startNewGame();
@@ -751,7 +726,8 @@ function resetGame() {
     }
     else{
        player.resetSheep();
-       startNewGame(); 
+       cancelAnimationFrame(animationFrameId);
+       drawGameOverScreen();
     }
 };
 
@@ -778,7 +754,7 @@ function startNewGame()
     waterLane5Logs = [];
 
     resetGame();
-        requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
 
 }
 
@@ -792,3 +768,22 @@ ctx.drawImage(sheepImg,x,y, col,row);
 }
 
 
+function drawGameOverScreen() {
+    // ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+    gameOverCard.style.display = "block";
+  }
+
+function restartGame()
+{
+    gameOverCard.style.display = "none";
+    gameWinCard.style.display = "none";
+    theme1.pause();
+    theme1.currentTime = 0;
+    startNewGame();
+}
+
+function drawGameWinScreen() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+    // Display the Game Win Card
+    gameWinCard.style.display = "block";
+  }

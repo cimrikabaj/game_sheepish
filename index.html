@@ -7,6 +7,60 @@
     <link href="css/style.css" rel="stylesheet">
     <title>Sheepish Game</title>
 </head>
+<style>
+    .screenCard {
+      display: none;
+      position: fixed; /* Fixed to stay over the canvas */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      background: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 10px;
+      z-index: 10; /* Ensures it's above the canvas */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+    #gameOverCard {
+      border: 2px solid red;
+    }
+    #gameOverCard h1 {
+      font-size: 24px;
+      color: red;
+    }
+    #gameWinCard {
+      border: 2px solid green;
+    }
+    #gameWinCard h1 {
+      font-size: 24px;
+      color: green;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    #restartButton {
+      background-color: red;
+    }
+    #restartButton:hover {
+      background-color: darkred;
+    }
+    #continueButton {
+      background-color: green;
+    }
+    #continueButton:hover {
+      background-color: darkgreen;
+    }
+</style>
 <body>
    
      <div class="canva1">
@@ -20,6 +74,16 @@
           src="image/2.png"
           width="300"
           height="227" />
+      </div>
+      <div id="gameOverCard" class="screenCard">
+        <h1>Game Over</h1>
+        <p>Do you want to restart?</p>
+        <button id="restartButton">Restart Game</button>
+      </div>
+      <div id="gameWinCard" class="screenCard">
+        <h1>You Win!</h1>
+        <p>Congratulations! Do you want to continue?</p>
+        <button id="continueButton">Play Again</button>
       </div>
     <script src="js/script.js"></script>
     <script src="js/audio.js"></script>
